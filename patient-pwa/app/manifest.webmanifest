@@ -1,0 +1,11 @@
+{
+  "name": "My Claims (reference app)",
+  "short_name": "My Claims",
+  "description": "Patient view of claims, pharmacy suggestions and billing, with live updates.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f6",
+  "theme_color": "#0f6e56",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

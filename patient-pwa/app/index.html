@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f6e56">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>My Claims</title>
+<style>
+  :root { --bg:#f6f7f6; --card:#fff; --ink:#1c2321; --muted:#5d6b66; --brand:#0f6e56; --ok:#1d7a3e; --warn:#a15c00; --bad:#b42318; --line:#dde3e0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121615; --card:#1b2120; --ink:#e8eeec; --muted:#9aa8a3; --brand:#4fc4a1; --ok:#58c47c; --warn:#e0a04a; --bad:#f07a6e; --line:#2e3836; } }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.45 system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--brand); color:#fff; padding:14px 16px; position:sticky; top:0; z-index:2; }
+  header h1 { margin:0; font-size:18px; }
+  header small { opacity:.85; }
+  main { padding:12px 16px 80px; max-width:640px; margin:0 auto; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin:12px 0; }
+  .row { display:flex; justify-content:space-between; gap:8px; align-items:baseline; }
+  .muted { color:var(--muted); font-size:14px; }
+  .pill { font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px; border:1px solid currentColor; white-space:nowrap; }
+  .APPROVED,.covered { color:var(--ok); } .SHORT_PAID,.uncovered { color:var(--warn); } .REJECTED { color:var(--bad); }
+  .bill { display:grid; grid-template-columns:1fr auto; gap:4px 12px; }
+  .bill .total { font-weight:700; border-top:1px solid var(--line); padding-top:6px; margin-top:4px; }
+  .adv { border-top:1px dashed var(--line); margin-top:10px; padding-top:10px; }
+  button { font:inherit; padding:8px 14px; border-radius:8px; border:1px solid var(--brand); background:var(--brand); color:#fff; cursor:pointer; }
+  button.ghost { background:transparent; color:var(--brand); }
+  textarea, select { width:100%; font:inherit; padding:8px; border-radius:8px; border:1px solid var(--line); background:var(--card); color:var(--ink); }
+  .toast { position:fixed; left:12px; right:12px; bottom:14px; max-width:616px; margin:0 auto; background:var(--ink); color:var(--bg); padding:12px 14px; border-radius:10px; display:none; z-index:5; }
+  .live { font-size:12px; } .live::before { content:"\25CF "; color:#f5c451; } .live.on::before { color:#7ee2a8; }
+  details summary { cursor:pointer; color:var(--brand); }
+</style>
+</head>
+<body>
+<header>
+  <div class="row"><h1>My Claims</h1><span id="live" class="live">connecting</span></div>
+  <small id="who"></small>
+</header>
+<main>
+  <div class="card">
+    <label class="muted" for="member">Demo patient (synthetic data)</label>
+    <select id="member"></select>
+  </div>
+  <div id="bill"></div>
+  <div id="items"></div>
+  <details class="card"><summary>Demo: simulate a pharmacist suggestion</summary>
+    <p class="muted">Sends a live suggestion to the patient currently selected, as the pharmacy would.</p>
+    <button id="simulate" class="ghost">Send suggestion now</button>
+  </details>
+</main>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>

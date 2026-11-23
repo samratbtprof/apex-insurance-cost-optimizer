@@ -1,0 +1,6 @@
+provider_id,provider_name,provider_type
+1,Synthetic General Hospital,HOSPITAL
+2,Synthetic City Clinic,CLINIC
+3,Synthetic Care Pharmacy,PHARMACY
+4,Synthetic Metro Hospital,HOSPITAL
+5,Synthetic Community Clinic,CLINIC

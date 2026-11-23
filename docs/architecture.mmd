@@ -1,0 +1,50 @@
+flowchart LR
+  subgraph Users
+    PH[Pharmacy staff]
+    DR[Doctors]
+    CL[Hospital claims team]
+    PT[Patient PWA in any browser]
+  end
+  subgraph APEX["Oracle APEX + Oracle DB (single source of truth)"]
+    APP[APEX apps and rules]
+    DB[(Prescriptions, dispense, claims, advisories, bills)]
+    OB[(notification_outbox)]
+  end
+  GW[API gateway with health checker]
+  subgraph NOTIFY["Notification unit: workers + Redis, replaced together as one unit"]
+    PWE[Email worker]
+    PWS[SMS worker]
+    PWP[Push worker]
+    RD[(Redis)]
+  end
+  INS[Insurer system]
+  EXT1[Email service]
+  EXT2[SMS gateway, registered templates]
+  WP[Web Push service]
+  FD[Front desk]
+  LK[(Loki logs)]
+  PH --> APP
+  DR --> APP
+  CL --> APP
+  PT <--> APP
+  APP --> DB
+  APP -- "claim data via insurer API" --> INS
+  INS -- "approve or disapprove" --> APP
+  APP -- "same transaction" --> OB
+  OB -- "poll pending rows" --> PWE
+  OB -- "poll pending rows" --> PWS
+  OB -- "poll pending rows" --> PWP
+  PWE --> EXT1
+  PWS --> EXT2
+  PWP --> RD
+  GW -. "ping every 5 s; on failure start new unit, divert, log, alert system team" .-> NOTIFY
+  RD --> WP
+  WP -. "generic alert" .-> PT
+  EXT1 -. "generic message" .-> PT
+  EXT2 -. "generic message" .-> PT
+  PT -- "login = acknowledged (read_at)" --> OB
+  PWP -- "no ack after 5 sends" --> FD
+  PWE --> LK
+  PWS --> LK
+  PWP --> LK
+  RD --> LK
